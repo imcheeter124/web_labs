@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Лабораторні роботи з веб-програмування</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 16px;
+      border: 1px solid #1f2937;
+      padding: 24px 28px 28px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 14px;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .student {
+      text-align: right;
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .student span {
+      display: block;
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .labs-list {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .lab-card {
+      background: #020617;
+      border-radius: 14px;
+      border: 1px solid #1f2937;
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .lab-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #f97316;
+    }
+
+    .lab-meta {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .lab-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+      color: #e5e7eb;
+    }
+
+    .lab-link {
+      margin-top: auto;
+    }
+
+    .lab-link a {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      background: #e11d48;
+      color: #f9fafb;
+      border: 1px solid #e11d48;
+      transition: background 0.15s ease, border 0.15s ease, transform 0.15s ease;
+    }
+
+    .lab-link a:hover {
+      background: #be123c;
+      border-color: #be123c;
+      transform: translateY(-1px);
+    }
+
+    .lab-link span {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: #6b7280;
+      border: 1px dashed #374151;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #6b7280;
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 18px 16px 20px;
+      }
+
+      .page-title {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">Лабораторні роботи з веб-програмування</h1>
+        <p class="page-subtitle">Комп’ютерний практикум: HTML, CSS, макетування та публікація сайту</p>
+      </div>
+      <div class="student">
+        <span>Студент групи ______</span>
+        <span>Варіант 8</span>
+      </div>
+    </header>
+
+    <section class="labs-list">
+      <article class="lab-card">
+        <h2 class="lab-title">Лабораторна робота №1</h2>
+        <p class="lab-meta">Тема: верстка макету за зразком, HTML + CSS</p>
+        <p class="lab-desc">
+          Реалізація макету згідно з варіантом 8: блокова структура, меню, списки, зображення,
+          карта посилань, адаптивна верстка та публікація на GitHub Pages.
+        </p>
+        <div class="lab-link">
+          <a href="lab1/index.html">Відкрити сайт ЛР №1</a>
+        </div>
+      </article>
+
+      <article class="lab-card">
+        <h2 class="lab-title">Лабораторна робота №2</h2>
+        <p class="lab-meta">Заплановано</p>
+        <p class="lab-desc">
+          Сторінка буде додана пізніше. Після виконання роботи сюди можна додати посилання
+          на відповідний сайт.
+        </p>
+        <div class="lab-link">
+          <span>ще не опубліковано</span>
+        </div>
+      </article>
+
+      <article class="lab-card">
+        <h2 class="lab-title">Лабораторна робота №3</h2>
+        <p class="lab-meta">Заплановано</p>
+        <p class="lab-desc">
+          Резервний блок під наступні лабораторні роботи з курсу. Структура головної сторінки
+          дозволяє легко додавати нові посилання.
+        </p>
+        <div class="lab-link">
+          <span>ще не опубліковано</span>
+        </div>
+      </article>
+    </section>
+
+    <p class="footer-note">
+      Для перевірки лабораторних робіт достатньо відкрити відповідне посилання на сайт потрібної ЛР.
+    </p>
+  </div>
+</body>
+</html>
