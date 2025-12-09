@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №2 - Вибір версії</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f172a;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 { margin-bottom: 40px; }
+        .buttons { display: flex; gap: 20px; }
+        .btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: scale(1.05); }
+        .btn-grid { background-color: #2563eb; } /* Синій */
+        .btn-flex { background-color: #16a34a; } /* Зелений */
+        .btn-table { background-color: #dc2626; } /* Червоний */
+    </style>
+</head>
+<body>
+
+    <h1>Оберіть варіант верстки (Варіант 8)</h1>
+    
+    <div class="buttons">
+        <a href="page-grid.html" class="btn btn-grid">CSS Grid</a>
+        <a href="page-flex.html" class="btn btn-flex">CSS Flexbox</a>
+        <a href="page-table.html" class="btn btn-table">HTML Tables</a>
+    </div>
+
+</body>
+</html>
