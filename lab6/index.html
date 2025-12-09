@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>MassCore Admin - Lab 6</title>
+  <link rel="stylesheet" href="style/style-grid.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="block block1"><h2>Панель керування</h2></div>
+      <h1 class="logo">MassCore Admin</h1>
+    </header>
+
+    <div class="middle">
+      <aside class="block block2">
+        <h3>Інструкція</h3>
+        <p>Додайте "Тости" (повідомлення) у список. Натисніть "Зберегти на сервер", щоб оновити клієнтську сторінку.</p>
+      </aside>
+
+      <nav class="block block3">
+        <ul class="menu">
+          <li><a href="admin.html" style="background:#e11d48">Адмінка</a></li>
+          <li><a href="view.html">Перегляд (Клієнт)</a></li>
+        </ul>
+      </nav>
+
+      <section class="block block5" style="align-items: flex-start; justify-content: flex-start;">
+        <h2 style="align-self: center;">Редактор Toasts (Варіант 8)</h2>
+        
+        <div id="toast-builder" class="toast-form-container">
+            </div>
+
+        <div style="margin-top: 20px; align-self: center;">
+            <button class="admin-btn" onclick="addNewToast()">+ Додати Toast</button>
+            <button class="admin-btn save" onclick="saveToServer()">Зберегти на сервер</button>
+        </div>
+        <p id="status-msg" style="color: #22c55e; margin-top:10px; opacity:0; transition: opacity 0.5s;">Збережено!</p>
+      </section>
+
+      <aside class="block block4"><h3>Статус</h3><p>Сервер очікує даних...</p></aside>
+      <section class="block block6"><h3>Лог дій</h3><div id="log"></div></section>
+    </div>
+
+    <footer class="footer">
+      <div class="block block7"><p>© 2025 MassCore Lab 6</p></div>
+      <div class="block blockY"><h2>Admin Mode</h2></div>
+    </footer>
+  </div>
+
+  <script>
+    // JS для Адмінки
+    let toasts = [];
+
+    // Функція додавання форми для нового тоста
+    function addNewToast(data = null) {
+        const container = document.getElementById('toast-builder');
+        const id = Date.now(); // унікальний ID
+        
+        const div = document.createElement('div');
+        div.className = 'toast-input-group';
+        div.id = 'toast-' + id;
+        
+        // Значення за замовчуванням або з завантажених даних
+        const titleVal = data ? data.title : 'Заголовок';
+        const msgVal = data ? data.message : 'Текст повідомлення...';
+        const timeVal = data ? data.time : 'зараз';
+        const typeVal = data ? data.type : 'info';
+
+        div.innerHTML = `
+            <div style="display:flex; justify-content:space-between;">
+                <strong>Toast #${container.children.length + 1}</strong>
+                <button class="admin-btn delete" style="padding:2px 8px; font-size:12px;" onclick="removeToast('${div.id}')">X</button>
+            </div>
+            <label>Заголовок:</label>
+            <input type="text" class="inp-title" value="${titleVal}">
+            <label>Час/Позначка:</label>
+            <input type="text" class="inp-time" value="${timeVal}">
+            <label>Тип (колір):</label>
+            <select class="inp-type">
+                <option value="info" ${typeVal=='info'?'selected':''}>Info (Blue)</option>
+                <option value="success" ${typeVal=='success'?'selected':''}>Success (Green)</option>
+                <option value="warning" ${typeVal=='warning'?'selected':''}>Warning (Orange)</option>
+                <option value="error" ${typeVal=='error'?'selected':''}>Error (Red)</option>
+            </select>
+            <label>Текст:</label>
+            <textarea class="inp-msg" rows="2">${msgVal}</textarea>
+        `;
+        container.appendChild(div);
+    }
+
+    function removeToast(id) {
+        document.getElementById(id).remove();
+    }
+
+    // Збір даних та відправка на сервер (AJAX/Fetch)
+    function saveToServer() {
+        const items = document.getElementsByClassName('toast-input-group');
+        const dataPayload = [];
+
+        for (let item of items) {
+            dataPayload.push({
+                title: item.querySelector('.inp-title').value,
+                time: item.querySelector('.inp-time').value,
+                type: item.querySelector('.inp-type').value,
+                message: item.querySelector('.inp-msg').value
+            });
+        }
+
+        fetch('backend.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataPayload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            const msg = document.getElementById('status-msg');
+            msg.style.opacity = 1;
+            setTimeout(() => msg.style.opacity = 0, 2000);
+            document.getElementById('log').innerText += `\n[${new Date().toLocaleTimeString()}] Saved ${dataPayload.length} toasts.`;
+        })
+        .catch(err => console.error('Error:', err));
+    }
+
+    // Завантаження поточного стану при старті
+    window.onload = function() {
+        fetch('backend.php')
+            .then(res => res.json())
+            .then(data => {
+                if(Array.isArray(data) && data.length > 0) {
+                    data.forEach(t => addNewToast(t));
+                } else {
+                    addNewToast(); // Додати хоча б один пустий
+                }
+            });
+    };
+  </script>
+</body>
+</html>

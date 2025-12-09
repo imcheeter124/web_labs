@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>MassCore - Live Updates</title>
+  <link rel="stylesheet" href="style/style-grid.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="block block1"><h2>Огляд MassCore</h2></div>
+      <h1 class="logo">MassCore Performance</h1>
+    </header>
+
+    <div class="middle">
+      <aside class="block block2">
+        <h3>Інформація</h3>
+        <p>Ця сторінка автоматично синхронізується з сервером.</p>
+        <p>Зміни, внесені в адмінці, з'являться тут автоматично.</p>
+      </aside>
+
+      <nav class="block block3">
+        <ul class="menu">
+          <li><a href="admin.html">Адмінка</a></li>
+          <li><a href="view.html" style="background:#e11d48">Перегляд</a></li>
+        </ul>
+      </nav>
+
+      <section class="block block5" style="align-items: stretch; justify-content: flex-start;">
+        <div style="text-align:center; margin-bottom: 20px;">
+            <h2>Live Notifications (Toasts)</h2>
+            <p style="font-size:12px; color:#6b7280">Оновлення кожні 3 сек...</p>
+        </div>
+        
+        <div id="display-container" class="toast-container">
+            <p style="text-align:center">Завантаження...</p>
+        </div>
+      </section>
+
+      <aside class="block block4"><h3>Новини</h3><p>Слідкуйте за оновленнями в центральному блоці.</p></aside>
+
+      <section class="block block6">
+        <h3>Статус з'єднання</h3>
+        <div id="connection-log" style="font-size:12px; font-family:monospace; color:#22c55e;">Очікування...</div>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <div class="block block7"><p>© 2025 MassCore Client</p></div>
+      <div class="block blockY"><h2>Science • Strength</h2></div>
+    </footer>
+  </div>
+
+  <script>
+    // JS для Клієнта (Варіант 8 - Display)
+    let currentDataJSON = '';
+
+    // Функція отримання даних (Polling) 
+    function fetchData() {
+        fetch('backend.php?nocache=' + new Date().getTime()) // prevent browser caching
+            .then(response => response.json())
+            .then(data => {
+                // Перевіряємо, чи змінилися дані, щоб не перемальовувати дарма
+                const newDataJSON = JSON.stringify(data);
+                if (newDataJSON !== currentDataJSON) {
+                    renderToasts(data);
+                    currentDataJSON = newDataJSON;
+                    logUpdate("Дані оновлено.");
+                } else {
+                   // logUpdate("Без змін.");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                logUpdate("Помилка з'єднання.");
+            });
+    }
+
+    // Рендеринг об'єктів (DOM маніпуляції без фреймворків) 
+    function renderToasts(toasts) {
+        const container = document.getElementById('display-container');
+        container.innerHTML = ''; // Очистка
+
+        if (!Array.isArray(toasts) || toasts.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#6b7280">Немає активних повідомлень.</p>';
+            return;
+        }
+
+        toasts.forEach((toast, index) => {
+            // Створення HTML елемента Toast
+            const el = document.createElement('div');
+            el.className = `toast-card type-${toast.type}`;
+            // Додаємо затримку анімації для каскадного ефекту
+            el.style.animationDelay = `${index * 0.1}s`; 
+            
+            el.innerHTML = `
+                <div class="toast-header">
+                    <span class="toast-title">${escapeHtml(toast.title)}</span>
+                    <span class="toast-time">${escapeHtml(toast.time)}</span>
+                </div>
+                <div class="toast-body">
+                    ${escapeHtml(toast.message)}
+                </div>
+            `;
+            container.appendChild(el);
+        });
+    }
+
+    // Захист від XSS
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function logUpdate(msg) {
+        const log = document.getElementById('connection-log');
+        log.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    }
+
+    // Запуск періодичного опитування (кожні 3 секунди)
+    setInterval(fetchData, 3000);
+    
+    // Перший запуск одразу
+    fetchData();
+  </script>
+</body>
+</html>
